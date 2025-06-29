@@ -3,14 +3,12 @@ const response = await fetch('https://stackable.club/version-test/api/1.1/obj/co
 const data = await response.json();
 const items = data.response.results;
 
-// Fallback formatter
 function jsonLd(course) {
   return {
     "@context": "https://schema.org",
     "@type": "Course",
     "name": course.Name || "Untitled Course",
     "description": course.Description || "No description provided",
-    // You can add more fields if available, like provider, datePublished, etc.
   };
 }
 ---
@@ -22,7 +20,7 @@ function jsonLd(course) {
 
     {items.map((item) => (
       <script type="application/ld+json">
-        {JSON.stringify(jsonLd(item), null, 2)}
+        {Astro.raw(JSON.stringify(jsonLd(item)))}
       </script>
     ))}
   </head>
