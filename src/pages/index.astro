@@ -1,16 +1,30 @@
 ---
 const response = await fetch('https://stackable.club/version-test/api/1.1/obj/course');
 const data = await response.json();
-
-// Assuming your Bubble data comes in this format:
-// { "response": { "results": [ { "field1": "...", "field2": "..." }, ... ] } }
-
 const items = data.response.results;
+
+// Fallback formatter
+function jsonLd(course) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": course.Name || "Untitled Course",
+    "description": course.Description || "No description provided",
+    // You can add more fields if available, like provider, datePublished, etc.
+  };
+}
 ---
 
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <title>My Astro Page</title>
+
+    {items.map((item) => (
+      <script type="application/ld+json">
+        {JSON.stringify(jsonLd(item), null, 2)}
+      </script>
+    ))}
   </head>
   <body>
     <h1>Bubble Data</h1>
