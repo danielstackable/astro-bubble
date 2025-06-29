@@ -1,4 +1,6 @@
 ---
+import { raw } from 'astro/runtime/server.js';
+
 const response = await fetch('https://stackable.club/version-test/api/1.1/obj/course');
 const data = await response.json();
 const items = data.response.results;
@@ -20,7 +22,7 @@ function jsonLd(course) {
 
     {items.map((item) => (
       <script type="application/ld+json">
-        {Astro.raw(JSON.stringify(jsonLd(item)))}
+        {raw(JSON.stringify(jsonLd(item)))}
       </script>
     ))}
   </head>
